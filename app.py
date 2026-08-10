@@ -2,7 +2,7 @@ import os
 import base64
 import io
 from datetime import datetime
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, send_from_directory
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, HRFlowable
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -12,8 +12,15 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from PIL import Image as PILImage
 import re
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'atenea-consultores-secret-key-2025'
+app = Flask(__name__, 
+            static_folder='static',  # Asegurar que Flask sepa dónde están los estáticos
+            static_url_path='/static')  # Ruta URL para estáticos
+app.config['SECRET_KEY'] = 'atenea-consultores-secret-key-2026'
+
+# Ruta explícita para archivos estáticos 
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)
 
 # ============================================
 # PRICE CONFIGURATION
