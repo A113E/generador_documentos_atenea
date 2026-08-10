@@ -1,0 +1,111 @@
+/* ============================================
+   ESTILOS PARA PÁGINA PRINCIPAL (SELECTOR)
+   ============================================ */
+
+.services {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.services h2 {
+    color: #1a3a5c;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.services .subtitle {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.service-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.service-card:hover:not(.coming-soon) {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.service-card.active {
+    border-color: #2d7d46;
+    background: #f0faf4;
+}
+
+.service-card.coming-soon {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.service-card .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.service-card h3 {
+    color: #1a3a5c;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.service-card p {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.btn-service {
+    display: inline-block;
+    padding: 10px 25px;
+    background: linear-gradient(135deg, #1a3a5c, #2d7d46);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-service:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(26, 58, 92, 0.3);
+}
+
+.btn-service:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.service-card .status {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.service-card.active .status {
+    color: #2d7d46;
+}
+
+.service-card.coming-soon .status {
+    color: #f39c12;
+}

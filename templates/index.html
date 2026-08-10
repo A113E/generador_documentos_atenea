@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atenea Consultores - Servicios Académicos</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <!-- Versiones adicionales para mejor compatibilidad -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+</head>
+<body>
+    <div class="container">
+        <!-- Header con Logo -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Atenea Consultores" class="logo">
+                <h1>Atenea Consultores</h1>
+                <p>Asesoría Académica Profesional</p>
+            </div>
+            <hr>
+        </div>
+
+        <!-- Selector de Servicios -->
+        <div class="services">
+            <h2>📋 Seleccione el servicio que necesita</h2>
+            <p class="subtitle">Elija una opción para comenzar con su solicitud</p>
+
+            <div class="services-grid">
+                <!-- Servicio 1: Tesis -->
+                <div class="service-card active">
+                    <div class="icon">🎓</div>
+                    <h3>Asesoría en Tesis</h3>
+                    <p>Acompañamiento completo desde el tema hasta la defensa final.</p>
+                    <a href="/form/tesis" class="btn-service">Seleccionar</a>
+                </div>
+
+                <!-- Servicio 2: Búsqueda Bibliográfica -->
+                <div class="service-card coming-soon">
+                    <div class="icon">📚</div>
+                    <h3>Búsqueda y Revisión Bibliográfica</h3>
+                    <p>Búsqueda especializada y gestión de referencias en formato APA, Vancouver, etc.</p>
+                    <a href="/form/search" class="btn-service">Seleccionar</a>
+                </div>
+
+                <!-- Servicio 3: Publicación Científica -->
+                <div class="service-card coming-soon">
+                    <div class="icon">📄</div>
+                    <h3>Asesoría en Publicación Científica</h3>
+                    <p>Desde la redacción hasta la selección de revista y seguimiento de revisiones.</p>
+                    <a href="/form/paper" class="btn-service">Seleccionar</a>
+                </div>
+
+                <!-- Servicio 4: Proyecto de Investigación -->
+                <div class="service-card coming-soon">
+                    <div class="icon">🔬</div>
+                    <h3>Asesoría en Proyecto de Investigación</h3>
+                    <p>Diseño y estructuración de proyectos de investigación científica.</p>
+                    <a href="/form/project" class="btn-service">Seleccionar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 Atenea Consultores A113E - Conocimiento, estructura y criterio para tu tesis.</p>
+            <p class="contact">📱 WhatsApp: +53 5 2873327 | 📧 ateneaconsultoresempresa@gmail.com</p>
+        </div>
+    </div>
+</body>
+</html>

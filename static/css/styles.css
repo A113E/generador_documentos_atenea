@@ -1,0 +1,100 @@
+/* ============================================
+   ESTILOS GLOBALES - ATENEA CONSULTORES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, #1a3a5c, #4a90d9, #1a3a5c);
+    margin: 15px 0;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    color: #1a3a5c;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.header p {
+    color: #5a7a9a;
+    font-size: 16px;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #e9ecef;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background: #dde1e6;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: #999;
+    font-size: 12px;
+}
+
+.footer .contact {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 22px;
+    }
+}

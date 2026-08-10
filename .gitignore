@@ -1,0 +1,94 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ============================================
+# Flask / Framework
+# ============================================
+instance/
+.webassets-cache
+.env
+.venv
+.vercel
+
+# ============================================
+# IDEs / Editores
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.log
+*.tmp
+
+# ============================================
+# Documentos generados (PDFs)
+# ============================================
+documentos_generados/
+*.pdf
+!static/img/*.pdf
+
+# ============================================
+# Archivos de base de datos
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# Archivos de entorno y configuración
+# ============================================
+.env
+.env.local
+.env.production
+config.py
+secrets.py
+
+# ============================================
+# Otros
+# ============================================
+*.bak
+*.old
+*.orig
+Thumbs.db
+*.tmp
+
+# ============================================
+# Archivos de reportes y logs
+# ============================================
+*.log
+*.out
+*.err
+reports/
+logs/
+
+# ============================================
+# Archivos de pruebas
+# ============================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ============================================
+# Archivos específicos de Vercel
+# ============================================
+.vercel
+.vercel_cache
+.vercel_output
