@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda Bibliográfica - Atenea Consultores</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form_busqueda.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jSignature/2.1.2/jSignature.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header con Logo -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Atenea Consultores" class="logo">
+                <h1>Atenea Consultores</h1>
+                <p>Asesoría Académica Profesional</p>
+            </div>
+            <hr>
+            <a href="/" class="btn-back">← Volver a servicios</a>
+        </div>
+
+        <!-- Formulario -->
+        <form id="commitmentForm" method="POST" action="/generar-pdf/busqueda">
+            <h2>📚 Búsqueda y Revisión Bibliográfica</h2>
+            <p class="subtitle">Complete los siguientes datos para generar su carta de compromiso</p>
+
+            <!-- Datos del cliente -->
+            <div class="section">
+                <h3>📋 Datos del Cliente</h3>
+
+                <div class="field">
+                    <label for="clientName">Nombre completo del cliente:</label>
+                    <input type="text" id="clientName" name="clientName" placeholder="Ej: Ana María López Pérez" required>
+                </div>
+
+                <div class="field">
+                    <label for="clientId">Carnet de Identidad (CI):</label>
+                    <input type="text" id="clientId" name="clientId" placeholder="Ej: 12345678901" required>
+                    <span class="help-text">Número de identificación oficial (11 dígitos)</span>
+                </div>
+
+                <div class="field">
+                    <label for="clientAddress">Dirección particular:</label>
+                    <input type="text" id="clientAddress" name="clientAddress" placeholder="Ej: Calle 123 #45-67, Vedado, La Habana" required>
+                </div>
+            </div>
+
+            <!-- ===== DATOS ACADÉMICOS ===== -->
+            <div class="section">
+                <h3>📚 Datos Académicos</h3>
+
+                <div class="field">
+                    <label for="institution">Institución educativa:</label>
+                    <input type="text" id="institution" name="institution" placeholder="Ej: Universidad de La Habana" required>
+                </div>
+
+                <!-- Temas de búsqueda (tags) -->
+                <div class="field">
+                    <label for="searchTopics">Temas de búsqueda:</label>
+                    <div class="tags-container">
+                        <input type="text" id="searchTopics" placeholder="Escribe un tema y presiona Enter" class="tag-input">
+                        <div id="tagsList" class="tags-list"></div>
+                    </div>
+                    <span class="help-text">Agrega todos los temas que necesites. Presiona Enter para añadir cada uno.</span>
+                    <input type="hidden" id="topicsHidden" name="searchTopics" value="">
+                </div>
+            </div>
+
+            <!-- Condiciones del servicio -->
+            <div class="section">
+                <h3>📋 Condiciones del Servicio</h3>
+
+                <!-- Tipo de servicio -->
+                <div class="field">
+                    <label for="serviceType">Tipo de servicio:</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="busqueda">Búsqueda bibliográfica</option>
+                        <option value="revision">Revisión y formato de bibliografía</option>
+                    </select>
+                </div>
+
+                <!-- Norma bibliográfica -->
+                <div class="field">
+                    <label for="citationStyle">Norma bibliográfica:</label>
+                    <select id="citationStyle" name="citationStyle" required>
+                        <option value="APA 7ma edición">APA 7ma edición</option>
+                        <option value="APA 6ta edición">APA 6ta edición</option>
+                        <option value="Vancouver">Vancouver</option>
+                        <option value="IEEE">IEEE</option>
+                        <option value="Chicago (Autor-Fecha)">Chicago (Autor-Fecha)</option>
+                        <option value="Chicago (Notas y Bibliografía)">Chicago (Notas y Bibliografía)</option>
+                        <option value="Harvard">Harvard</option>
+                        <option value="MLA">MLA</option>
+                        <option value="ISO 690">ISO 690</option>
+                        <option value="Otro (especificar en observaciones)">Otro (especificar en observaciones)</option>
+                    </select>
+                </div>
+
+                <!-- Cantidad de referencias -->
+                <div class="field">
+                    <label for="referenceCount">Cantidad de referencias bibliográficas:</label>
+                    <input type="number" id="referenceCount" name="referenceCount" min="1" max="300" placeholder="Ej: 50" required>
+                    <span class="help-text">Máximo 300 referencias</span>
+                </div>
+
+                <!-- Observaciones -->
+                <div class="field">
+                    <label for="observations">Observaciones o requisitos adicionales:</label>
+                    <textarea id="observations" name="observations" rows="3" placeholder="Ej: Solo artículos en español, publicados desde 2020, etc."></textarea>
+                </div>
+            </div>
+
+            <!-- Condiciones economicas -->
+            <div class="section">
+                <h3>💰 Condiciones Económicas</h3>
+
+                <div class="field">
+                    <label for="deliveryDate">Fecha de entrega final:</label>
+                    <input type="date" id="deliveryDate" name="deliveryDate" required>
+                    
+                    <div class="alert-note">
+                        <p>⚠️ <strong>Nota importante:</strong> Debido a la situación actual del país (bloqueo económico, limitaciones de conectividad y servicios), esta fecha puede estar sujeta a cambios. En caso de ser necesario, se notificará al cliente con la debida antelación y se acordará una nueva fecha de mutuo acuerdo.</p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Precio total del servicio:</label>
+                    <div class="price-display">
+                        <span id="currencySymbol">CUP </span>
+                        <span id="priceDisplay">0.00</span>
+                        <span class="info">*El precio se calcula automáticamente: <strong>cantidad × 100 CUP</strong></span>
+                    </div>
+                    <input type="hidden" id="price" name="price" value="0">
+                </div>
+
+                <div class="price-table">
+                    <p><strong>📊 Precios de referencia:</strong></p>
+                    <ul>
+                        <li>Hasta 50 referencias: <span class="ref-price">5,000 CUP</span></li>
+                        <li>Hasta 100 referencias: <span class="ref-price">10,000 CUP</span></li>
+                        <li>Hasta 150 referencias: <span class="ref-price">15,000 CUP</span></li>
+                        <li>Hasta 300 referencias: <span class="ref-price">30,000 CUP</span></li>
+                    </ul>
+                    <p class="note">*El precio se calcula multiplicando la cantidad de referencias por 100 CUP.</p>
+                </div>
+            </div>
+
+            <!-- Firma -->
+            <div class="section">
+                <h3>✍️ Firma del Cliente</h3>
+                <div class="field signature-field">
+                    <label>Firme aquí con su dedo (móvil) o ratón (PC):</label>
+                    <div id="signaturePad"></div>
+                    <span class="signature-hint">🖊️ Dibuja tu firma directamente en el recuadro blanco</span>
+                    <div class="signature-buttons">
+                        <button type="button" id="clearSignature" class="btn-secondary">🗑️ Limpiar firma</button>
+                    </div>
+                    <input type="hidden" name="signatureData" id="signatureData">
+                </div>
+            </div>
+
+            <!-- Condiciones y envio -->
+            <div class="terms">
+                <p>Al enviar este formulario, aceptas que los datos proporcionados son correctos y que la firma electrónica tiene el mismo valor legal que una firma manuscrita. Los datos serán tratados con confidencialidad.</p>
+            </div>
+
+            <button type="submit" class="btn-primary" id="generateBtn">📄 Generar Carta de Compromiso</button>
+
+            <div id="loadingMessage" class="loading-message">
+                ⏳ Generando documento... Por favor espera.
+            </div>
+        </form>
+
+        <div class="footer">
+            <p>© 2026 Atenea Consultores A113E - Conocimiento, estructura y criterio para tu investigación.</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script_busqueda.js') }}"></script>
+</body>
+</html>

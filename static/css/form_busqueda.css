@@ -1,5 +1,5 @@
 /* ============================================
-   ESTILOS PARA FORMULARIO DE TESIS
+   ESTILOS PARA FORMULARIO DE BÚSQUEDA BIBLIOGRÁFICA
    ============================================ */
 
 h2 {
@@ -75,44 +75,30 @@ h2 {
 }
 
 /* ============================================
-   SERVICIOS TAGS (ETIQUETAS SELECCIONABLES)
+   TAGS (TEMAS DE BÚSQUEDA)
    ============================================ */
-.services-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.service-tag {
-    padding: 10px 18px;
+.tags-container {
     border: 2px solid #ddd;
-    border-radius: 25px;
+    border-radius: 8px;
+    padding: 10px;
     background: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
     transition: all 0.3s;
-    color: #555;
 }
 
-.service-tag:hover {
+.tags-container:focus-within {
     border-color: #4a90d9;
-    background: #f0f7ff;
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.2);
 }
 
-.service-tag.active {
-    border-color: #2d7d46;
-    background: #e8f5e9;
-    color: #1a3a5c;
+.tag-input {
+    width: 100%;
+    border: none;
+    padding: 8px 0;
+    font-size: 16px;
+    outline: none;
+    background: transparent;
 }
 
-.service-tag.active::after {
-    content: " ✓";
-    color: #2d7d46;
-}
-
-/* Lista de servicios seleccionados (tags) */
 .tags-list {
     display: flex;
     flex-wrap: wrap;
@@ -152,57 +138,6 @@ h2 {
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
-}
-
-/* ============================================
-   DESCRIPCIONES DE SERVICIOS
-   ============================================ */
-.service-description {
-    background: #f0f7ff;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    border-left: 4px solid #4a90d9;
-    animation: fadeIn 0.3s ease;
-}
-
-.service-description strong {
-    color: #1a3a5c;
-}
-
-.service-description .price-detail {
-    color: #2d7d46;
-    font-weight: 700;
-}
-
-/* ============================================
-   CONDICIONES LEGALES
-   ============================================ */
-.legal-conditions {
-    background: #fef9f0;
-    border: 1px solid #f0dcc0;
-}
-
-.legal-conditions h3 {
-    color: #8b6b3d;
-    border-bottom-color: #f0dcc0;
-}
-
-.legal-text {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #444;
-}
-
-.legal-text p {
-    margin-bottom: 10px;
-    padding-left: 10px;
-    border-left: 3px solid #f0dcc0;
-    padding-left: 15px;
-}
-
-.legal-text strong {
-    color: #8b6b3d;
 }
 
 /* ============================================
@@ -422,11 +357,6 @@ h2 {
     
     .price-display {
         font-size: 20px;
-    }
-
-    .service-tag {
-        font-size: 12px;
-        padding: 8px 14px;
     }
 
     .tag-item {

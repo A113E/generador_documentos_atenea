@@ -1,5 +1,5 @@
 /* ============================================
-   ESTILOS PARA FORMULARIO DE TESIS
+   ESTILOS PARA FORMULARIO DE PUBLICACIÓN CIENTÍFICA
    ============================================ */
 
 h2 {
@@ -184,7 +184,7 @@ h2 {
 }
 
 .legal-conditions h3 {
-    color: #8b6b3d;
+    color: #8b6d3d;
     border-bottom-color: #f0dcc0;
 }
 
@@ -202,7 +202,7 @@ h2 {
 }
 
 .legal-text strong {
-    color: #8b6b3d;
+    color: #8b6d3d;
 }
 
 /* ============================================

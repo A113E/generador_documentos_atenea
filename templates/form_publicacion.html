@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asesoría en Tesis - Atenea Consultores</title>
+    <title>Asesoría en Publicación Científica - Atenea Consultores</title>
 
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/form_tesis.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form_publicacion.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jSignature/2.1.2/jSignature.min.js"></script>
 </head>
@@ -30,8 +30,8 @@
         </div>
 
         <!-- Formulario -->
-        <form id="commitmentForm" method="POST" action="/generar-pdf/tesis">
-            <h2>🎓 Asesoría en Tesis</h2>
+        <form id="commitmentForm" method="POST" action="/generar-pdf/publicacion">
+            <h2>📄 Asesoría en Publicación Científica</h2>
             <p class="subtitle">Complete los siguientes datos para generar su carta de compromiso</p>
 
             <!-- ===== DATOS DEL CLIENTE ===== -->
@@ -53,32 +53,36 @@
                     <label for="clientAddress">Dirección particular:</label>
                     <input type="text" id="clientAddress" name="clientAddress" placeholder="Ej: Calle 123 #45-67, Vedado, La Habana" required>
                 </div>
-            </div>
-
-            <!-- ===== DATOS ACADÉMICOS ===== -->
-            <div class="section">
-                <h3>📚 Datos Académicos</h3>
 
                 <div class="field">
-                    <label for="academicLevel">Nivel académico:</label>
-                    <select id="academicLevel" name="academicLevel" required>
+                    <label for="institution">Institución educativa o laboral:</label>
+                    <input type="text" id="institution" name="institution" placeholder="Ej: Universidad de La Habana, Centro de Investigaciones..." required>
+                </div>
+            </div>
+
+            <!-- ===== DATOS DEL ARTÍCULO ===== -->
+            <div class="section">
+                <h3>📄 Datos del Artículo</h3>
+
+                <div class="field">
+                    <label for="articleTitle">Título del artículo:</label>
+                    <input type="text" id="articleTitle" name="articleTitle" placeholder="Ej: Impacto del cambio climático en la agricultura cubana" required>
+                </div>
+
+                <div class="field">
+                    <label for="articleType">Tipo de artículo:</label>
+                    <select id="articleType" name="articleType" required>
                         <option value="">Seleccione una opción</option>
-                        <option value="Pregrado">Pregrado</option>
-                        <option value="Diplomado">Diplomado</option>
-                        <option value="Especializacion">Especialización</option>
-                        <option value="Maestria">Maestría</option>
-                        <option value="Doctorado">Doctorado</option>
+                        <option value="original">Artículo original de investigación</option>
+                        <option value="revision">Artículo de revisión bibliográfica</option>
+                        <option value="ensayo">Ensayo clínico o estudio de caso</option>
+                        <option value="otros">Otros (especificar en observaciones)</option>
                     </select>
                 </div>
 
                 <div class="field">
-                    <label for="institution">Institución educativa:</label>
-                    <input type="text" id="institution" name="institution" placeholder="Ej: Universidad de La Habana" required>
-                </div>
-
-                <div class="field">
-                    <label for="thesisTopic">Tema de la tesis:</label>
-                    <input type="text" id="thesisTopic" name="thesisTopic" placeholder="Ej: Impacto del cambio climático en la agricultura cubana" required>
+                    <label for="articleTopic">Tema o área de conocimiento:</label>
+                    <input type="text" id="articleTopic" name="articleTopic" placeholder="Ej: Ciencias sociales, Biología, Ingeniería..." required>
                 </div>
             </div>
 
@@ -88,14 +92,11 @@
                 <p class="help-text" style="margin-bottom: 15px;">Puede seleccionar uno o varios servicios. Al seleccionarlos, se mostrará la descripción de cada uno.</p>
 
                 <div class="services-tags">
-                    <button type="button" class="service-tag" data-service="confeccion_completa">
-                        📄 Confección de tesis completa
+                    <button type="button" class="service-tag" data-service="confeccion_articulo">
+                        ✍️ Confección de artículo completo + envío a revista
                     </button>
-                    <button type="button" class="service-tag" data-service="confeccion_capitulo">
-                        📑 Confección de capítulo específico
-                    </button>
-                    <button type="button" class="service-tag" data-service="revision_tesis">
-                        🔍 Revisión de tesis (con sugerencias)
+                    <button type="button" class="service-tag" data-service="revision_articulo">
+                        🔍 Revisión de artículo (sugerencias o adaptación a formato)
                     </button>
                     <button type="button" class="service-tag" data-service="revision_bibliografica">
                         📚 Revisión bibliográfica
@@ -111,6 +112,30 @@
                 </div>
 
                 <input type="hidden" name="selectedServices" id="selectedServicesHidden" value="">
+            </div>
+
+            <!-- ===== SELECCIÓN DE REVISTA ===== -->
+            <div class="section">
+                <h3>📰 Selección de Revista</h3>
+
+                <div class="field">
+                    <label for="journalOption">Opción de selección de revista:</label>
+                    <select id="journalOption" name="journalOption" required>
+                        <option value="cliente">El cliente sugiere la revista</option>
+                        <option value="consultores">Atenea Consultores sugiere la revista</option>
+                    </select>
+                </div>
+
+                <div class="field" id="journalNameField">
+                    <label for="journalName">Nombre de la revista sugerida:</label>
+                    <input type="text" id="journalName" name="journalName" placeholder="Ej: Revista Cubana de Investigación">
+                    <span class="help-text">Solo si seleccionó "El cliente sugiere la revista"</span>
+                </div>
+
+                <div class="field">
+                    <label for="journalObservations">Observaciones sobre la revista (opcional):</label>
+                    <textarea id="journalObservations" name="journalObservations" rows="2" placeholder="Ej: Preferencia por acceso abierto, factor de impacto, etc."></textarea>
+                </div>
             </div>
 
             <!-- ===== CONDICIONES ECONÓMICAS ===== -->
@@ -149,12 +174,18 @@
                 <div class="price-table">
                     <p><strong>📊 Precios de referencia:</strong></p>
                     <ul>
-                        <li>Confección de tesis completa: <span class="ref-price" id="refCompleta">$80 Pregrado / $90-120 Posgrado</span></li>
-                        <li>Confección de capítulo específico: <span class="ref-price" id="refCapitulo">$35 Pregrado / $60 Posgrado</span></li>
-                        <li>Revisión de tesis (con sugerencias): <span class="ref-price" id="refRevision">$30 Pregrado / $50 Posgrado</span></li>
+                        <li>Confección de artículo completo + envío: <span class="ref-price">$50 - $70 según tipo de artículo</span></li>
+                        <li>Revisión de artículo (sugerencias o formato): <span class="ref-price">$40 USD</span></li>
                         <li>Revisión bibliográfica: <span class="ref-price">Cantidad × 100 CUP</span></li>
                     </ul>
-                    <p class="note">*Los precios pueden variar según la complejidad del tema. El precio final se confirma en la propuesta personalizada.</p>
+                    <p class="note"><strong>Tipos de artículo y precios:</strong></p>
+                    <ul>
+                        <li>Artículo original de investigación: <span class="ref-price">$50 USD</span></li>
+                        <li>Artículo de revisión bibliográfica: <span class="ref-price">$60 USD</span></li>
+                        <li>Ensayo clínico o estudio de caso: <span class="ref-price">$70 USD</span></li>
+                        <li>Otros: <span class="ref-price">$50 USD</span></li>
+                    </ul>
+                    <p class="note">*Reenvío a otra revista (si la primera rechaza): <span class="ref-price">+$25 USD</span></p>
                     <p class="note">** Para revisión bibliográfica, indique la cantidad de referencias en el campo correspondiente.</p>
                 </div>
 
@@ -184,17 +215,19 @@
             <div class="section legal-conditions">
                 <h3>⚖️ Condiciones Legales</h3>
                 <div class="legal-text">
-                    <p><strong>1. Naturaleza del servicio:</strong> El servicio prestado por Atenea Consultores consiste en la asesoría, confección y/o revisión de trabajos académicos. No se garantiza la aceptación o aprobación absoluta por parte de la institución educativa o tribunal evaluador.</p>
+                    <p><strong>1. Naturaleza del servicio:</strong> El servicio prestado por Atenea Consultores consiste en la asesoría, confección, revisión y/o envío de artículos científicos. <strong>No se garantiza la aceptación o publicación del artículo</strong>, ya que esto depende de la importancia de la revista, el criterio de los revisores y la política editorial de cada publicación.</p>
                     
-                    <p><strong>2. Responsabilidad del cliente:</strong> El cliente es el único responsable de leer, revisar y aprobar el contenido final del trabajo entregado. Atenea Consultores no se hace responsable por errores tipográficos, de contenido o de formato que el cliente no haya señalado durante el proceso de revisión.</p>
+                    <p><strong>2. Garantía de calidad:</strong> Nuestro trabajo asegura la integridad científica, la calidad académica y el cumplimiento de los estándares de escritura y formato del artículo, lo que aumenta significativamente las probabilidades de aceptación, pero no la garantiza.</p>
                     
-                    <p><strong>3. Política de devoluciones:</strong> No se aceptan devoluciones una vez iniciado el servicio. El pago inicial del 30% es no reembolsable y cubre el tiempo de planificación y organización del proyecto.</p>
+                    <p><strong>3. Responsabilidad del cliente:</strong> El cliente es el único responsable de leer, revisar y aprobar el contenido final del artículo entregado. Atenea Consultores no se hace responsable por errores tipográficos, de contenido o de formato que el cliente no haya señalado durante el proceso de revisión.</p>
                     
-                    <p><strong>4. Garantía de calidad:</strong> Nuestro trabajo garantiza la confección y revisión del proyecto con los más altos estándares académicos, lo que aumenta significativamente las probabilidades de aceptación, pero no la garantiza.</p>
+                    <p><strong>4. Política de devoluciones:</strong> No se aceptan devoluciones una vez iniciado el servicio. El pago inicial del 30% es no reembolsable y cubre el tiempo de planificación y organización del proyecto.</p>
                     
-                    <p><strong>5. Revisiones adicionales:</strong> El servicio incluye hasta 3 rondas de revisiones por parte del cliente. Las revisiones adicionales a las acordadas tendrán un costo extra de $10 USD por ronda de revisión.</p>
+                    <p><strong>5. Envío a revistas:</strong> El servicio de confección incluye el envío a <strong>una</strong> revista. En caso de rechazo, el reenvío a otra revista tiene un costo adicional de $25 USD.</p>
                     
-                    <p><strong>6. Plazos:</strong> Los plazos de entrega son estimados y pueden verse afectados por factores externos como la disponibilidad de información, conectividad, o situaciones de fuerza mayor. En caso de retraso, se notificará al cliente con antelación.</p>
+                    <p><strong>6. Revisiones adicionales:</strong> El servicio incluye todas las rondas de revisiones solicitadas por el revisor de la revista, siempre que sean razonables y exista una posibilidad real de publicación. Cambios sustanciales o reescritura completa pueden tener costo adicional.</p>
+                    
+                    <p><strong>7. Plazos:</strong> Los plazos de entrega son estimados y pueden verse afectados por factores externos como la disponibilidad de información, conectividad, o situaciones de fuerza mayor. En caso de retraso, se notificará al cliente con antelación.</p>
                 </div>
             </div>
 
@@ -215,6 +248,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script_tesis.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script_publicacion.js') }}"></script>
 </body>
 </html>

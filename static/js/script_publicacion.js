@@ -3,25 +3,21 @@ $(document).ready(function() {
     // 1. CONFIGURACIÓN DE SERVICIOS
     // ============================================
     const serviceConfig = {
-        'confeccion_completa': {
-            label: 'Confección de tesis completa',
-            descripcion: 'Elaboración completa de la tesis incluyendo todos los capítulos: Introducción, Marco Teórico, Metodología, Resultados, Discusión, Conclusiones y Bibliografía. Incluye 3 rondas de revisiones gratuitas.',
-            precios: { 'Pregrado': 100, 'Diplomado': 120, 'Especializacion': 120, 'Maestria': 120, 'Doctorado': 120 }
+        'confeccion_articulo': {
+            label: 'Confección de artículo completo + envío a revista',
+            descripcion: 'Elaboración completa del artículo científico con todas las secciones (IMRYD), análisis estadístico, tablas y gráficos. Incluye selección de revista, adaptación a normas, envío y seguimiento de revisiones. Cubre una revista. Reenvío a otra revista: +$25 USD.',
+            precio_base: 50,
+            precio_extra: { 'original': 0, 'revision': 10, 'ensayo': 20, 'otros': 0 }
         },
-        'confeccion_capitulo': {
-            label: 'Confección de capítulo específico',
-            descripcion: 'Elaboración de un capítulo específico de la tesis (ej: Marco Teórico, Metodología, etc.). Incluye 2 rondas de revisiones gratuitas.',
-            precios: { 'Pregrado': 35, 'Diplomado': 40, 'Especializacion': 40, 'Maestria': 40, 'Doctorado': 40 }
-        },
-        'revision_tesis': {
-            label: 'Revisión de tesis (con sugerencias)',
-            descripcion: 'Revisión exhaustiva del trabajo completo con sugerencias de mejora en estructura, contenido, redacción y formato. No incluye corrección directa del texto, solo sugerencias.',
-            precios: { 'Pregrado': 30, 'Diplomado': 40, 'Especializacion': 40, 'Maestria': 40, 'Doctorado': 40 }
+        'revision_articulo': {
+            label: 'Revisión de artículo (sugerencias o adaptación a formato)',
+            descripcion: 'Revisión exhaustiva del artículo con sugerencias de mejora en estructura, contenido, redacción y formato, o adaptación al formato específico de la revista seleccionada. No incluye corrección directa del texto.',
+            precio_fijo: 40
         },
         'revision_bibliografica': {
             label: 'Revisión bibliográfica',
             descripcion: 'Búsqueda y/o revisión de referencias bibliográficas según la norma seleccionada. El precio se calcula multiplicando la cantidad de referencias por 100 CUP.',
-            precios: { 'Pregrado': 0, 'Diplomado': 0, 'Especializacion': 0, 'Maestria': 0, 'Doctorado': 0 },
+            precio_fijo: 0,
             isVariable: true
         }
     };
@@ -38,11 +34,19 @@ $(document).ready(function() {
         'CUP': 'CUP '
     };
 
+    // Precios por tipo de artículo
+    const articlePrices = {
+        'original': 50,
+        'revision': 60,
+        'ensayo': 70,
+        'otros': 50
+    };
+
     function updatePrice() {
         var totalPrice = 0;
-        var level = $('#academicLevel').val();
         var currency = $('#currency').val();
         var symbol = currencySymbols[currency] || '$';
+        var articleType = $('#articleType').val();
         var hasBibliografia = false;
         var refCount = parseInt($('#referenceCount').val()) || 0;
 
@@ -50,12 +54,14 @@ $(document).ready(function() {
             var config = serviceConfig[serviceKey];
             if (config) {
                 if (config.isVariable) {
-                    // Revisión bibliográfica: precio variable según cantidad
                     hasBibliografia = true;
-                    // El precio se calcula en el campo de referencia
+                } else if (config.precio_fijo !== undefined) {
+                    totalPrice += config.precio_fijo;
                 } else {
-                    var price = config.precios[level] || 0;
-                    totalPrice += price;
+                    // Confección de artículo: precio base + extra por tipo
+                    var basePrice = config.precio_base || 50;
+                    var extra = config.precio_extra[articleType] || 0;
+                    totalPrice += basePrice + extra;
                 }
             }
         });
@@ -65,11 +71,9 @@ $(document).ready(function() {
             totalPrice += refCount * 100;
         }
 
-        // Mostrar precio en la moneda seleccionada (si es CUP, el precio ya está en CUP)
+        // Mostrar precio en la moneda seleccionada
         var displayPrice = totalPrice;
         if (currency !== 'CUP' && hasBibliografia) {
-            // Si hay revisión bibliográfica, el precio en CUP se convierte a USD/EUR/MLC
-            // Usar tasa de cambio aproximada (1 USD = 265 CUP)
             var exchangeRate = 265;
             if (currency === 'USD') {
                 displayPrice = (totalPrice / exchangeRate).toFixed(2);
@@ -138,13 +142,17 @@ $(document).ready(function() {
         selectedServices.forEach(function(serviceKey) {
             var config = serviceConfig[serviceKey];
             if (config) {
-                var level = $('#academicLevel').val();
                 var priceInfo = '';
+                var articleType = $('#articleType').val();
                 if (config.isVariable) {
                     priceInfo = 'Precio: Cantidad × 100 CUP';
+                } else if (config.precio_fijo !== undefined) {
+                    priceInfo = 'Precio: $' + config.precio_fijo + ' USD';
                 } else {
-                    var price = config.precios[level] || 0;
-                    priceInfo = 'Precio: $' + price + ' ' + (level || '');
+                    var base = config.precio_base || 50;
+                    var extra = config.precio_extra[articleType] || 0;
+                    var total = base + extra;
+                    priceInfo = 'Precio: $' + total + ' USD';
                 }
                 var $desc = $('<div class="service-description">')
                     .html('<strong>' + config.label + ':</strong> ' + config.descripcion + ' <span class="price-detail">(' + priceInfo + ')</span>');
@@ -177,11 +185,11 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 4. PRICE UPDATES (nivel, moneda, referencias)
+    // 4. EVENTOS DE ACTUALIZACIÓN DE PRECIO
     // ============================================
-    $('#academicLevel').on('change', function() {
+    $('#articleType').on('change', function() {
+        updateUI();
         updatePrice();
-        updateUI(); // Para actualizar descripciones con precios
     });
 
     $('#currency').on('change', function() {
@@ -198,7 +206,25 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 5. SIGNATURE PAD
+    // 5. SELECCIÓN DE REVISTA - Mostrar/Ocultar campo
+    // ============================================
+    $('#journalOption').on('change', function() {
+        if ($(this).val() === 'cliente') {
+            $('#journalNameField').show();
+        } else {
+            $('#journalNameField').hide();
+            $('#journalName').val('');
+        }
+    });
+    // Estado inicial
+    if ($('#journalOption').val() === 'cliente') {
+        $('#journalNameField').show();
+    } else {
+        $('#journalNameField').hide();
+    }
+
+    // ============================================
+    // 6. SIGNATURE PAD
     // ============================================
     $('#signaturePad').jSignature({
         'width': '100%',
@@ -222,7 +248,7 @@ $(document).ready(function() {
     }
 
     // ============================================
-    // 6. LIMPIAR FIRMA
+    // 7. LIMPIAR FIRMA
     // ============================================
     $('#clearSignature').click(function() {
         $('#signaturePad').jSignature('reset');
@@ -236,7 +262,7 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 7. DETECTAR FIRMA
+    // 8. DETECTAR FIRMA
     // ============================================
     function checkSignature() {
         var data = getSignatureData();
@@ -269,7 +295,7 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 8. ENVÍO DEL FORMULARIO CON AJAX
+    // 9. ENVÍO DEL FORMULARIO CON AJAX
     // ============================================
     $('#commitmentForm').on('submit', function(e) {
         e.preventDefault();
@@ -278,12 +304,13 @@ $(document).ready(function() {
         var name = $('#clientName').val().trim();
         var id = $('#clientId').val().trim();
         var address = $('#clientAddress').val().trim();
-        var level = $('#academicLevel').val();
         var institution = $('#institution').val().trim();
-        var topic = $('#thesisTopic').val().trim();
+        var title = $('#articleTitle').val().trim();
+        var type = $('#articleType').val();
+        var topic = $('#articleTopic').val().trim();
         var date = $('#deliveryDate').val();
 
-        if (!name || !id || !address || !level || !institution || !topic || !date) {
+        if (!name || !id || !address || !institution || !title || !type || !topic || !date) {
             alert('⚠️ Por favor, completa todos los campos obligatorios.');
             return false;
         }
@@ -307,6 +334,15 @@ $(document).ready(function() {
             }
         }
 
+        // Validar nombre de revista si el cliente la sugiere
+        if ($('#journalOption').val() === 'cliente') {
+            var journalName = $('#journalName').val().trim();
+            if (!journalName) {
+                alert('⚠️ Por favor, indica el nombre de la revista sugerida.');
+                return false;
+            }
+        }
+
         // Obtener firma
         var signatureData = getSignatureData();
         if (signatureData) {
@@ -322,7 +358,7 @@ $(document).ready(function() {
 
         // Enviar con AJAX
         $.ajax({
-            url: '/generar-pdf/tesis',
+            url: '/generar-pdf/publicacion',
             type: 'POST',
             data: formData,
             processData: false,
@@ -340,7 +376,7 @@ $(document).ready(function() {
                     var blob = new Blob([data], { type: 'application/pdf' });
                     var link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
-                    link.download = 'carta_compromiso_tesis.pdf';
+                    link.download = 'carta_compromiso_publicacion.pdf';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -369,7 +405,7 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 9. FUNCIÓN: MOSTRAR ÉXITO Y REDIRIGIR
+    // 10. FUNCIÓN: MOSTRAR ÉXITO Y REDIRIGIR
     // ============================================
     function mostrarExitoYRedirigir() {
         var overlay = $('<div id="successOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;">');
@@ -396,7 +432,7 @@ $(document).ready(function() {
     }
 
     // ============================================
-    // 10. VALIDACIONES ADICIONALES
+    // 11. VALIDACIONES ADICIONALES
     // ============================================
     $('#deliveryDate').on('change', function() {
         if ($(this).val()) {
@@ -415,7 +451,7 @@ $(document).ready(function() {
     });
 
     // ============================================
-    // 11. INICIALIZACIÓN
+    // 12. INICIALIZACIÓN
     // ============================================
     setTimeout(checkSignature, 500);
     updateUI();
